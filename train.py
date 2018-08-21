@@ -124,7 +124,7 @@ def train():
             pass_num=1000
         )
         file_obj = fluid.layers.shuffle(file_obj, 500)
-        file_obj = fluid.layers.batch(file_obj, batch_size=6 if is_train else 100)
+        file_obj = fluid.layers.batch(file_obj, batch_size=6 if is_train else 50)
         img, des_im, total_num, group_num = fluid.layers.read_file(file_obj)
         print('read over')# here is the data
         total_num = fluid.layers.cast(total_num, dtype="float32")
