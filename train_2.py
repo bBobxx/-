@@ -15,8 +15,8 @@ def conv_bn_layer(input, ch_out, filter_size, stride, padding, activation='leaky
         num_filters=ch_out,
         stride=stride,
         padding=padding,
-        act=None)
-    return fluid.layers.batch_norm(conv1, act=activation)
+        act=activation)
+    return conv1
 
 
 def shortcut(input, ch_out, stride):
@@ -44,7 +44,7 @@ def block(func, input, ch_out, count, stride, k_sz):
     return iter_bottleneck
 
 def multi_col(input, filter_size):
-    conv1 = conv_bn_layer(input, ch_out=32, filter_size=filter_size, stride=2, padding=int((filter_size-1)/2))
+    conv1 = conv_bn_layer(input, ch_out=64, filter_size=filter_size, stride=2, padding=int((filter_size-1)/2))
     pool1 = fluid.layers.pool2d(input=conv1, pool_type='max', pool_size=3, pool_stride=2, pool_padding=1)
     res1 = block(bottleneck, pool1, 16, 1, 1, filter_size)
     res2 = block(bottleneck, res1, 16, 1, 2, filter_size)
