@@ -15,8 +15,8 @@ def conv_bn_layer(input, ch_out, filter_size, stride, padding, activation='leaky
         num_filters=ch_out,
         stride=stride,
         padding=padding,
-        act=activation)
-    return conv1
+        act=None)
+    return fluid.layers.batch_norm(conv1, act=activation)
 
 
 def shortcut(input, ch_out, stride):
