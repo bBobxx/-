@@ -333,7 +333,7 @@ if __name__ == '__main__':
             reader1 = paddle.batch(reader_creator1(), batch_size=1)
             print "save test"
             fluid.recordio_writer.convert_reader_to_recordio_file(
-                "/media/wyb/document1/pp/record_data/test_"+str(j-21)+".recordio", feeder=feeder, reader_creator=reader1)
+                "test_"+str(j-21)+".recordio", feeder=feeder, reader_creator=reader1)
         else:
             for jj in range(3):
                 if jj == 0:
