@@ -127,8 +127,8 @@ def train():
         total_num = fluid.layers.cast(total_num, dtype="float32")
         group_num = create_group(group_num)
         predict1, predict0 = FPN_and_groupout(img)  # build our network
-        delta0 = 100
-        delta1 = 20
+        delta0 = 1
+        delta1 = 1
         loss0 = fluid.layers.elementwise_sub(predict1, des_im)
         loss0 = fluid.layers.reduce_mean(fluid.layers.abs(loss0))
         loss1 = fluid.layers.reduce_mean(fluid.layers.square_error_cost(
@@ -144,7 +144,7 @@ def train():
         train_loss, pre_train, tr_num = network(is_train=True)
         optimizer = fluid.optimizer.AdamOptimizer(learning_rate=
                                                   fluid.layers.exponential_decay(
-                                                      0.0007, 4000, 0.9))
+                                                      0.000007, 4000, 0.9))
         optimizer.minimize(train_loss)
     test_program = fluid.Program()
     with fluid.unique_name.guard():
