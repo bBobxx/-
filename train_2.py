@@ -111,8 +111,8 @@ def train():
         fluid.io.save_params(exe, model_path)
 
     def network(is_train):
-        record_file = glob.glob('../record_data/train*.recordio')
-        test_file = glob.glob('../record_data/test*.recordio')
+        record_file = glob.glob('./train*.recordio')
+        test_file = glob.glob('./test*.recordio')
         file_obj = fluid.layers.open_files(
             filenames= record_file if is_train else test_file ,
             shapes = [[-1,3, 540, 960], [-1,1,540, 960],[-1, 1], [-1, 1]],
@@ -128,7 +128,7 @@ def train():
         group_num = create_group(group_num)
         predict1, predict0 = FPN_and_groupout(img)  # build our network
         delta0 = 100
-        delta1 = 10
+        delta1 = 20
         loss0 = fluid.layers.elementwise_sub(predict1, des_im)
         loss0 = fluid.layers.reduce_mean(fluid.layers.abs(loss0))
         loss1 = fluid.layers.reduce_mean(fluid.layers.square_error_cost(
@@ -144,7 +144,7 @@ def train():
         train_loss, pre_train, tr_num = network(is_train=True)
         optimizer = fluid.optimizer.AdamOptimizer(learning_rate=
                                                   fluid.layers.exponential_decay(
-                                                      0.0005, 4000, 0.9))
+                                                      0.0007, 4000, 0.9))
         optimizer.minimize(train_loss)
     test_program = fluid.Program()
     with fluid.unique_name.guard():
